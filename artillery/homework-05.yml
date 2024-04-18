@@ -1,0 +1,35 @@
+config:
+  target: "https://api.dane.gov.pl/doc"
+  phases:
+    - duration: 20
+      arrivalRate: 10
+      name: Artillery First Test
+  plugins:
+    ensure: {}
+  ensure:
+    thresholds:
+      - http.response_time.p95: 1000
+    conditions:
+      - expression: "http.request_rate >= 20 and http.response_time.max < 7000"
+
+scenarios:
+  - flow:
+    - get:
+        url: "{{ target }}get"
+        name: Get Government Info
+    - post:
+        url: "{{ target }}post"
+        name: Log in User
+        headers:
+          Content-Type: application/json
+        json:
+          username: "Test User"
+          password: "Temp Password"
+        capture:
+            - json: "$.json"
+              as: "request_body"
+            - json: "$.headers.Host"
+              as: "host"
+    - log: "Json value from response is: {{ request_body }}"
+    - log: "Host value from response is: {{ host }}"
+

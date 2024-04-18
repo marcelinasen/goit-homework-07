@@ -1,0 +1,52 @@
+--------------------------------
+Summary report @ 22:03:15(+0200)
+--------------------------------
+
+errors.Failed capture or match: ................................................ 200
+http.codes.200: ................................................................ 200
+http.codes.405: ................................................................ 200
+http.downloaded_bytes: ......................................................... 0
+http.request_rate: ............................................................. 20/sec
+http.requests: ................................................................. 400
+http.response_time:
+  min: ......................................................................... 37
+  max: ......................................................................... 259
+  mean: ........................................................................ 65.6
+  median: ...................................................................... 58.6
+  p95: ......................................................................... 111.1
+  p99: ......................................................................... 214.9
+http.responses: ................................................................ 400
+vusers.created: ................................................................ 200
+vusers.created_by_name.0: ...................................................... 200
+vusers.failed: ................................................................. 200
+
+Checks:
+ok: http.request_rate >= 20 and http.response_time.max < 7000
+ok: http.response_time.p95 < 1000
+
+//WNIOSKI//
+
+http.codes.200 i http.codes.405: Liczba żądań HTTP zakończonych kodem odpowiedzi 200 (sukces) i 405 (metoda niedozwolona). 
+W tym teście odnotowano 200 żądań z każdym z tych kodów. Wszystkie żądania typu POST zostały zakończone wynikiem 405, ponieważ
+https://api.dane.gov.pl/doc nie obsługuje żądań typu POST.
+
+http.downloaded_bytes: W teście nie pobrano żadnych bajtów.
+
+http.request_rate: Średnia liczba żądań HTTP na sekundę wynosiła 20, co może być użytecznym wskaźnikiem obciążenia serwera.
+
+http.requests i http.responses: Łącznie wykonano 400 żądań HTTP i otrzymano 400 odpowiedzi.
+
+http.response_time: Pomiar czasu odpowiedzi HTTP. Wartości min, max, mean, median, p95 (percentyl 95) i p99 (percentyl 99) 
+pokazują odpowiednio minimalny, maksymalny, średni, medianę, wartość 95. percentyla i wartość 99. percentyla czasu odpowiedzi. 
+Dla tego testu maksymalny czas odpowiedzi wynosił 259 ms, co wskazuje na to, że większość żądań była obsługiwana w akceptowalnym 
+czasie.
+
+vusers.created: Liczba utworzonych użytkowników wirtualnych. W teście utworzono 200 wirtualnych uytkowników.
+
+vusers.failed: Liczba nieudanych użytkowników wirtualnych. 
+
+W ogólnym rozrachunku test wydaje się być udany, z większością żądań obsługiwanych w rozsądnym czasie i bez żadnych zauważalnych
+problemów wydajnościowych.
+
+Wszystkie założone przez ensure checks zostały spełnione.
+
